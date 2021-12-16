@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+        <script src="https://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+        <script
+        src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+        crossorigin="anonymous"></script>
+    </head>
+    <body>
+    <div class="ct-chart ct-perfect-fourth"></div>
+    <script>
+        var getData=$.get('/data');
+        
+        getData.done(function(results){
+
+        var data={
+        //A labals array that can contain any sort of values
+        labels:[results.labels],
+        //Our series array that contains series objects or in this case series data arrays
+        series:[
+        results.results
+        ]
+        };
+
+        var options ={
+        Width:1000,
+        Height:1000
+        }
+        var myChart = new Chartist.Line('ct-chart', data, options);
+        });
+    </script>
+    </body>
+</html>
