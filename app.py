@@ -14,10 +14,7 @@ app= Flask(__name__)
 def index():
     return render_template('index.html')
 
-    #return ('Hello World23')
-# @app.route('/displaygraph')
-# def displaygraph():
-#     return render_template('chart.html')
+
 
 
 @app.route('/allplayersdata',methods=['GET'])
@@ -25,59 +22,24 @@ def totaldata():
     client =MongoClient("mongodb+srv://JaisonJose:Password@cluster0.ood9a.mongodb.net/player_stats?ssl=true&ssl_cert_reqs=CERT_NONE")
     db = client.get_database('player_stats_db')
     records=db.players_collection
-    X=[]
-    Y1=[]
-    Y2=[]
-    Y3=[]
-    Y4=[]
-    Y5=[]
-    Y6=[]
+
     list=[]
     for item in db.players_collection.find():
         list.append({'Name' : item['player_name'], 'Goal' : int(item['goals'])})
 
-    # for item in db.players_collection.find().limit(10):
-    #     X.append(item['player_name'])
-    #     Y1.append(item['goals'])
-    #     Y2.append(item['shots'])
-    #     Y3.append(item['assists'])
-    #     Y4.append(item['key_passes'])
-    #     Y5.append(item['yellow_cards'])
-    #     Y6.append(item['red_cards'])
-    data_to_plot=db.players_collection.find()
-    string_data=str(data_to_plot)
-    print(string_data,file=sys.stderr)
-    #return render_template('chart.html',data=data_to_plot)
+
     return jsonify(list) 
 
-@app.route('/data')
+@app.route('/data',methods=['GET'])
 def data():
     client =MongoClient("mongodb+srv://JaisonJose:Password@cluster0.ood9a.mongodb.net/player_stats?ssl=true&ssl_cert_reqs=CERT_NONE")
     db = client.get_database('player_stats_db')
     records=db.players_collection
-    X=[]
-    Y1=[]
-    Y2=[]
-    Y3=[]
-    Y4=[]
-    Y5=[]
-    Y6=[]
+
     list=[]
     for item in db.players_collection.find().limit(10):
         list.append({'Name' : item['player_name'], 'Goal' : int(item['goals'])})
 
-    # for item in db.players_collection.find().limit(10):
-    #     X.append(item['player_name'])
-    #     Y1.append(item['goals'])
-    #     Y2.append(item['shots'])
-    #     Y3.append(item['assists'])
-    #     Y4.append(item['key_passes'])
-    #     Y5.append(item['yellow_cards'])
-    #     Y6.append(item['red_cards'])
-    # data_to_plot=db.players_collection.find().limit(10)
-    # string_data=str(data_to_plot)
-    # print(string_data,file=sys.stderr)
-    #return render_template('chart.html',data=data_to_plot)
     return jsonify(list)   
 
 @app.route('/chart')
@@ -85,39 +47,16 @@ def column_chart():
     client =MongoClient("mongodb+srv://JaisonJose:Password@cluster0.ood9a.mongodb.net/player_stats?ssl=true&ssl_cert_reqs=CERT_NONE")
     db = client.get_database('player_stats_db')
     records=db.players_collection
-    Y1=[]
-    Y2=[]
-    Y3=[]
-    Y4=[]
-    Y5=[]
-    Y6=[]
-    X = {}
     list=[]
     for item in db.players_collection.find().limit(10):
         list.append(item)
-        #myDict[]
-        #X['player_name']
-        # X.append(item['player_name']['goals'])
-        # Y1.append(item['goals'])
-        # Y2.append(item['shots'])
-        # Y3.append(item['assists'])
-        # Y4.append(item['key_passes'])
-        # Y5.append(item['yellow_cards'])
-        # Y6.append(item['red_cards'])
-
-
-    data_to_plot=db.players_collection.find().limit(10)
-    string_data=str(data_to_plot)
-    print(string_data,file=sys.stderr)
-    return render_template('charts.html',data=data_to_plot)
+    return render_template('charts.html')
 
 
 @app.route('/refreshstandings',methods=['GET'])
 def schedulejob():
     client =MongoClient("mongodb+srv://JaisonJose:Password@cluster0.ood9a.mongodb.net/player_stats?ssl=true&ssl_cert_reqs=CERT_NONE")
     db = client.get_database('player_stats_db')
-    
-    records=db.players_collection
 
     page_connect = urlopen("https://understat.com/league/EPL")
     page_html = BeautifulSoup(page_connect, "html.parser")
